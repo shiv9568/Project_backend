@@ -18,18 +18,28 @@ const limiter = rateLimit({
     message: 'Too many requests, please try again later.',
 });
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://project-frontend-delta-self.vercel.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: [
+        'http://localhost:5173', 
+        'http://localhost:3000', 
+        'https://project-frontend-delta-self.vercel.app',
+        'https://project-backend-liard.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
     optionsSuccessStatus: 200,
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
-  };
-  app.use(cors(corsOptions));
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token'],
+    exposedHeaders: ['Access-Control-Allow-Origin']
+};
 
-app.use(helmet());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }
+}));
 app.use(limiter);
 
 app.get('/',(req,res)=>{
