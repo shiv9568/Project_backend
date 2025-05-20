@@ -20,7 +20,13 @@ const limiter = rateLimit({
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://project-frontend-delta-self.vercel.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
+  };
 app.use(helmet());
 app.use(limiter);
 
