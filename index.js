@@ -27,6 +27,8 @@ const corsOptions = {
     optionsSuccessStatus: 200,
     allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
   };
+  app.use(cors(corsOptions));
+
 app.use(helmet());
 app.use(limiter);
 
